@@ -11,7 +11,6 @@ jobs:
           name: Test and build
           command: |
             ./scripts/build.sh
-
       - store_artifacts:
           path: artifacts
 
@@ -52,16 +51,13 @@ jobs:
           command: |
             mkdir -p $EXTRACT_DEST
             tar -xvzf artifacts/pal-tracker-$CIRCLE_SHA1.tgz -C $EXTRACT_DEST
-
       - run:
           name: Deploy
           command: |
             cd $EXTRACT_DEST
-
             cf login -a $CF_API -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORG -s $ENVIRONMENT
             cf push -f manifest-$ENVIRONMENT.yml
-           ./migrate-databases.sh pal-tracker . /root/project
-
+            ./migrate-databases.sh pal-tracker . /root/project
   deployToProd:
     docker:
       - image: 'microsoft/dotnet:2-sdk'
@@ -94,15 +90,13 @@ jobs:
           command: |
             mkdir -p $EXTRACT_DEST
             tar -xvzf artifacts/pal-tracker-$CIRCLE_SHA1.tgz -C $EXTRACT_DEST
-
       - run:
           name: Deploy
           command: |
             cd $EXTRACT_DEST
-
             cf login -a $CF_API -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORG -s $ENVIRONMENT
             cf push -f manifest-$ENVIRONMENT.yml
-           ./migrate-databases.sh pal-tracker . /root/project
+            ./migrate-databases.sh pal-tracker . /root/project
 workflows:
   version: 2
   deployment-pipeline:
